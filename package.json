@@ -9,19 +9,19 @@
   "start": "next start"
  },
  "dependencies": {
-  "airly": "^2.0.1",
+  "airly": "^3.0.0",
   "chart.js": "^2.9.1",
-  "core-js": "3.3.5",
-  "date-format": "^2.1.0",
+  "core-js": "3.3.6",
+  "date-fns": "^2.6.0",
   "haversine": "^1.1.1",
   "idb-keyval": "^3.2.0",
   "modern-normalize": "^0.5.0",
-  "next": "9.1.1",
+  "next": "9.1.2",
   "next-fonts": "^0.19.0",
   "react": "16.11.0",
   "react-chartjs-2": "^2.8.0",
   "react-dom": "16.11.0",
-  "styled-components": "^5.0.0-beta.11",
+  "styled-components": "^5.0.0-rc.1",
   "use-position": "0.0.6"
  },
  "devDependencies": {
