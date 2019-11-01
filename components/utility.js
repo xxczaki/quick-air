@@ -35,7 +35,7 @@ const Utility = () => {
 
 						const installations = await airly.nearestInstallations(latitude, longitude, 30, 1);
 
-						const data = await airly.idData(installations[0].id);
+						const data = await airly.installationMeasurements(installations[0].id);
 
 						module.set('qa-installations', installations);
 						module.set('qa-data', data);
@@ -70,7 +70,7 @@ const Utility = () => {
 					setResults(
 						<>
 							<h2>Current:</h2>
-							{current.map(el => <p key={el.name}>{el.name}: <b>{el.value} µg/m³</b></p>)}
+							{current.map(el => <p key={el.name}>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}: <b>{el.value} µg/m³</b> ({el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)} %` : `${Math.round(el.value / 50 * 100)} %`})</p>)}
 							<>
 								<p>Air Quality: <b style={{color}}>{classification}</b></p>
 								<i style={{fontSize: '0.8em'}}>{description}</i>
@@ -81,8 +81,8 @@ const Utility = () => {
 					);
 				} else {
 					// Format forecast dates to be user friendly
-					const {default: format} = await import('date-format');
-					const from = await data.forecast.map(el => `${format('dd.MM hh:mm', new Date(el.fromDateTime))}`);
+					const {format} = await import('date-fns');
+					const from = await data.forecast.map(el => `${format(new Date(el.fromDateTime), 'dd.MM hh:mm')}`);
 
 					// Get PM25 forecast
 					const pm25Values = data.forecast.map(el => {
@@ -101,7 +101,7 @@ const Utility = () => {
 					setResults(
 						<>
 							<h2>Current:</h2>
-							{current.map(el => <p key={el.name}>{el.name}: <b>{el.value} µg/m³</b></p>)}
+							{current.map(el => <p key={el.name}>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}: <b>{el.value} µg/m³</b> ({el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)} %` : `${Math.round(el.value / 50 * 100)} %`})</p>)}
 							<>
 								<p>Air Quality: <b style={{color}}>{classification}</b></p>
 								<i style={{fontSize: '0.8em'}}>{description}</i>
