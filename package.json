@@ -21,8 +21,7 @@
   "react": "16.11.0",
   "react-chartjs-2": "^2.8.0",
   "react-dom": "16.11.0",
-  "styled-components": "^5.0.0-rc.1",
-  "use-position": "0.0.6"
+  "styled-components": "^5.0.0-rc.1"
  },
  "devDependencies": {
   "@babel/core": "^7.6.4",
