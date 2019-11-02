@@ -1,21 +1,39 @@
 import React, {useState} from 'react';
 import dynamic from 'next/dynamic';
+import {
+	Box,
+	Stack,
+	Button,
+	Heading,
+	Stat,
+	StatLabel,
+	StatNumber,
+	StatHelpText,
+	Alert,
+	AlertIcon,
+	AlertTitle,
+	AlertDescription,
+	Tag,
+	Spinner
+} from '@chakra-ui/core';
 
 const Bar = dynamic(
 	() => import('react-chartjs-2').then(module => module.Bar),
-	{loading: () => <p>Loading chart...</p>}
+	{loading: () => <Spinner/>}
 );
 
-import Button from './button';
-import Loading from './loading';
-import Wrapper from './wrapper';
+const Wrapper = dynamic(
+	() => import('./wrapper'),
+	{loading: () => <Spinner/>}
+);
 
 const Utility = () => {
+	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState(null);
 
 	const handleSubmit = async () => {
 		if (!results) {
-			setResults(<Loading/>);
+			setLoading(true);
 		}
 
 		const getPosition = function (options) {
@@ -76,16 +94,28 @@ const Utility = () => {
 					if (classification === 'UNKNOWN') {
 						setResults(
 							<>
-								<h2>Current:</h2>
-								{current.map(el => <p key={el.name}>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}: <b>{el.value} µg/m³</b> ({el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)} %` : `${Math.round(el.value / 50 * 100)} %`})</p>)}
+								<Heading as="h2" size="lg">Current:</Heading>
+								<br/>
+								<Stat>
+									{current.map(el => (
+										<div key={el.name}>
+											<StatLabel>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}</StatLabel>
+											<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
+											<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
+											<br/>
+										</div>
+									))}
+								</Stat>
+								<br/>
 								<>
-									<p>Air Quality: <b style={{color}}>{classification}</b></p>
+									<p>Air Quality: <Tag style={{backgroundColor: color}} size="sm">{classification}</Tag></p>
 									<i style={{fontSize: '0.8em'}}>{description}</i>
 								</>
 								<br/>
 								<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
 							</>
 						);
+						setLoading(false);
 					} else {
 						// Format forecast dates to be user friendly
 						const {format} = await import('date-fns');
@@ -106,46 +136,75 @@ const Utility = () => {
 						});
 
 						setResults(
-							<>
-								<h2>Current:</h2>
-								{current.map(el => <p key={el.name}>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}: <b>{el.value} µg/m³</b> ({el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)} %` : `${Math.round(el.value / 50 * 100)} %`})</p>)}
-								<>
-									<p>Air Quality: <b style={{color}}>{classification}</b></p>
-									<i style={{fontSize: '0.8em'}}>{description}</i>
-								</>
+							<Stack maxWidth="50em">
+								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+									<Heading as="h2" size="lg">Current:</Heading>
+									<br/>
+									<Stat>
+										{current.map(el => (
+											<div key={el.name}>
+												<StatLabel>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}</StatLabel>
+												<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
+												<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
+											</div>
+										))}
+									</Stat>
+									<br/>
+									<>
+										<p>Air Quality: <Tag style={{backgroundColor: color}} size="sm">{classification}</Tag></p>
+										<i style={{fontSize: '0.8em'}}>{description}</i>
+									</>
+								</Box>
 								<br/>
-								<Wrapper>
-									<h2>PM2.5 Forecast</h2>
-									<Bar
-										data={{
-											labels: from,
-											datasets: [{
-												label: 'PM2.5 (in μg/m3)',
-												backgroundColor: pm25Values.map(value => classifyAirQuality(value).color),
-												data: pm25Values
-											}]
-										}}
-									/>
-									<h2>PM10 Forecast</h2>
-									<Bar
-										data={{
-											labels: from,
-											datasets: [{
-												label: 'PM10 (in μg/m3)',
-												backgroundColor: '#9E9E9E',
-												data: pm10Values
-											}]
-										}}
-									/>
-								</Wrapper>
+								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+									<Wrapper>
+										<Heading as="h2" size="lg">PM2.5 Forecast</Heading>
+										<br/>
+										<Bar
+											data={{
+												labels: from,
+												datasets: [{
+													label: 'PM2.5 (in μg/m3)',
+													backgroundColor: pm25Values.map(value => classifyAirQuality(value).color),
+													data: pm25Values
+												}]
+											}}
+										/>
+									</Wrapper>
+								</Box>
+								<br/>
+								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+									<Wrapper>
+										<Heading as="h2" size="lg">PM10 Forecast</Heading>
+										<br/>
+										<Bar
+											data={{
+												labels: from,
+												datasets: [{
+													label: 'PM10 (in μg/m3)',
+													backgroundColor: '#9E9E9E',
+													data: pm10Values
+												}]
+											}}
+										/>
+									</Wrapper>
+								</Box>
 								<br/>
 								<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
-							</>
+							</Stack>
 						);
+						setLoading(false);
 					}
 				});
 			} catch (error) {
-				setResults(`Something went wrong! ${error}`);
+				setResults(
+					<Alert style={{maxWidth: '50em'}} status="error">
+						<AlertIcon/>
+						<AlertTitle mr={2}>Something went wrong!</AlertTitle>
+						<AlertDescription>{error}</AlertDescription>
+					</Alert>
+				);
+				setLoading(false);
 			}
 		};
 
@@ -155,17 +214,40 @@ const Utility = () => {
 			})
 			.catch(error => {
 				if (error.message === 'User denied Geolocation') {
-					setResults('Please grant location access');
+					setResults(
+						<Alert style={{maxWidth: '50em'}} status="warning">
+							<AlertIcon/>
+							<AlertTitle mr={2}>Please grant location access</AlertTitle>
+							<AlertDescription>We need it to search for air quality sensors near you.</AlertDescription>
+						</Alert>
+					);
+					setLoading(false);
 				} else {
-					setResults(error.message);
+					setResults(
+						<Alert style={{maxWidth: '50em'}} status="error">
+							<AlertIcon/>
+							<AlertTitle mr={2}>Something went wrong!</AlertTitle>
+							<AlertDescription>{error.message}</AlertDescription>
+						</Alert>
+					);
+					setLoading(false);
 				}
 			});
 	};
 
 	return (
 		<>
-			<Button type="submit" disabled={results === 'Please grant location access'} onClick={handleSubmit}>
-				{results === null || results === 'Please grant location access' ? 'Check air quality' : '🔄 Refresh'}
+			<Button
+				style={{width: '250px'}}
+				size="lg"
+				variantColor="green"
+				leftIcon={results === null || results === 'Please grant location access' ? '' : 'repeat'}
+				type="submit"
+				disabled={results === 'Please grant location access'}
+				isLoading={loading}
+				onClick={handleSubmit}
+			>
+				{results === null || results === 'Please grant location access' ? 'Check air quality' : 'Refresh'}
 			</Button>
 			<br/>
 			<br/>
