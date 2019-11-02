@@ -1,33 +1,31 @@
 import App from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import {createGlobalStyle} from 'styled-components';
+import {Global, css} from '@emotion/core';
+import {ThemeProvider, ColorModeProvider, CSSReset} from '@chakra-ui/core';
 
 // Assets
-import '../node_modules/modern-normalize/modern-normalize.css';
-import RobotoMonoWoff from '../public/fonts/roboto-mono-v7-latin-ext-regular.woff';
-import RobotoMonoWoff2 from '../public/fonts/roboto-mono-v7-latin-ext-regular.woff2';
+import OpenSansWoff from '../public/fonts/open-sans-v17-latin-regular.woff';
+import OpenSansWoff2 from '../public/fonts/open-sans-v17-latin-regular.woff2';
 
-const GlobalStyle = createGlobalStyle`
+const globalStyle = css`
 	@font-face {
-		font-family: 'Roboto Mono';
+		font-family: 'Open Sans';
 		font-style: normal;
 		font-weight: 400;
 		font-display: fallback;
-		src: local('Roboto Mono'), local('RobotoMono-Regular'),
-			url(${RobotoMonoWoff2}) format('woff2'),
-			url(${RobotoMonoWoff}) format('woff');
+		src: local('Open Sans'), local('OpenSans-Regular'),
+			url(${OpenSansWoff2}) format('woff2'),
+			url(${OpenSansWoff}) format('woff');
   	}
 
 	body {
-		background-color: #212121;
-		font-family: Roboto Mono, monospace;
+		font-family: Open Sans, arial, sans-serif;
 		margin: auto;
-		width: 80%;
+		width: 100%;
 		font-size: 16px;
 		padding-top: 50px;
 		padding-bottom: 100px;
-		color: #fff;
 		-webkit-font-smoothing: antialiased;
 		text-rendering: optimizeSpeed;
 	}
@@ -46,13 +44,16 @@ class MyApp extends App {
 		const {Component, pageProps} = this.props;
 
 		return (
-			<>
-				<GlobalStyle/>
-				<Head>
-					<title>Quick Air</title>
-				</Head>
-				<Component {...pageProps}/>
-			</>
+			<ThemeProvider>
+				<ColorModeProvider>
+					<CSSReset/>
+					<Global styles={globalStyle}/>
+					<Head>
+						<title>Quick Air</title>
+					</Head>
+					<Component {...pageProps}/>
+				</ColorModeProvider>
+			</ThemeProvider>
 		);
 	}
 }
