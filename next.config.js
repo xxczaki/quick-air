@@ -1,4 +1,3 @@
-const withCSS = require('@zeit/next-css');
 const withFonts = require('next-fonts');
 const withOptimizedImages = require('next-optimized-images');
 const withOffline = require('next-offline');
@@ -30,4 +29,4 @@ const nextConfig = {
 	}
 };
 
-module.exports = withCSS(withOptimizedImages(withFonts(withOffline(nextConfig))));
+module.exports = withOptimizedImages(withFonts(withOffline(nextConfig)));
