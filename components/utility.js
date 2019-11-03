@@ -4,6 +4,7 @@ import {
 	Box,
 	Stack,
 	Button,
+	Flex,
 	Heading,
 	Stat,
 	StatLabel,
@@ -22,6 +23,11 @@ const Bar = dynamic(
 	{loading: () => <Spinner/>}
 );
 
+const Line = dynamic(
+	() => import('react-chartjs-2').then(module => module.Line),
+	{loading: () => <Spinner/>}
+);
+
 const Wrapper = dynamic(
 	() => import('./wrapper'),
 	{loading: () => <Spinner/>}
@@ -32,9 +38,7 @@ const Utility = () => {
 	const [results, setResults] = useState(null);
 
 	const handleSubmit = async () => {
-		if (!results) {
-			setLoading(true);
-		}
+		setLoading(true);
 
 		const getPosition = function (options) {
 			return new Promise(((resolve, reject) => {
@@ -82,11 +86,11 @@ const Utility = () => {
 						item.name === 'PM25' || item.name === 'PM10'
 					));
 
-					// Get current PM25 value
-					const currentQuality = current.map(el => el.value)[0];
+					// Check Airly CAQI index
+					const index = data.current.indexes[0];
 
 					const {default: classifyAirQuality} = await import('./utils/classifier');
-					const {classification, description, color} = classifyAirQuality(currentQuality);
+					const {classification, advice, color} = classifyAirQuality(index);
 
 					const {default: haversine} = await import('haversine');
 					const distance = Math.round(haversine({latitude, longitude}, location, {unit: 'km'}));
@@ -107,10 +111,11 @@ const Utility = () => {
 									))}
 								</Stat>
 								<br/>
-								<>
-									<p>Air Quality: <Tag style={{backgroundColor: color}} size="sm">{classification}</Tag></p>
-									<i style={{fontSize: '0.8em'}}>{description}</i>
-								</>
+								<Flex direction="row">
+									<p style={{paddingRight: '10px'}}>Air Quality:</p>
+									<Tag style={{backgroundColor: color}} size="sm">{classification}</Tag>
+								</Flex>
+								<i style={{fontSize: '0.8em'}}>{advice}</i>
 								<br/>
 								<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
 							</>
@@ -126,6 +131,10 @@ const Utility = () => {
 							const value = el.values.map(el => el.value);
 
 							return value[0];
+						});
+
+						const pm25Indexes = data.forecast.map(el => {
+							return el.indexes[0];
 						});
 
 						// Get PM10 forecast
@@ -150,22 +159,23 @@ const Utility = () => {
 										))}
 									</Stat>
 									<br/>
-									<>
-										<p>Air Quality: <Tag style={{backgroundColor: color}} size="sm">{classification}</Tag></p>
-										<i style={{fontSize: '0.8em'}}>{description}</i>
-									</>
+									<Flex direction="row">
+										<p style={{paddingRight: '10px'}}>Air Quality:</p>
+										<Tag style={{backgroundColor: color}} size="sm">{classification}</Tag>
+									</Flex>
+									<i style={{fontSize: '0.8em'}}>{advice}</i>
 								</Box>
 								<br/>
 								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 									<Wrapper>
-										<Heading as="h2" size="lg">PM2.5 Forecast</Heading>
+										<Heading as="h2" size="lg">Air Quality Forecast</Heading>
 										<br/>
 										<Bar
 											data={{
 												labels: from,
 												datasets: [{
-													label: 'PM2.5 (in μg/m3)',
-													backgroundColor: pm25Values.map(value => classifyAirQuality(value).color),
+													label: 'Airly CAQI',
+													backgroundColor: pm25Indexes.map(value => classifyAirQuality(value).color),
 													data: pm25Values
 												}]
 											}}
@@ -175,16 +185,29 @@ const Utility = () => {
 								<br/>
 								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 									<Wrapper>
-										<Heading as="h2" size="lg">PM10 Forecast</Heading>
+										<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
 										<br/>
-										<Bar
+										<Line
+											height={250}
 											data={{
 												labels: from,
-												datasets: [{
-													label: 'PM10 (in μg/m3)',
-													backgroundColor: '#9E9E9E',
-													data: pm10Values
-												}]
+												datasets: [
+													{
+														label: 'PM2.5 (in μg/m3)',
+														backgroundColor: '#3182CE',
+														data: pm25Values
+													},
+													{
+														label: 'PM10 (in μg/m3)',
+														backgroundColor: '#63B3ED',
+														data: pm10Values
+													}
+												]
+											}}
+											options={{
+												tooltips: {
+													mode: 'index'
+												}
 											}}
 										/>
 									</Wrapper>
