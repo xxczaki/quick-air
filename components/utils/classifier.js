@@ -1,31 +1,37 @@
 'use strict';
 
-const classifyAirQuality = value => {
-	if (value < 13) {
-		return {classification: 'VERY GOOD', description: 'Air quality is really nice.', color: '#2E7D32'};
+const classifyAirQuality = index => {
+	const {level, advice} = index;
+
+	if (level === 'VERY_LOW') {
+		return {classification: 'VERY GOOD', advice, color: '#276749'};
 	}
 
-	if (value > 13 && value < 37) {
-		return {classification: 'GOOD', description: 'Air quality is decent.', color: '#7CB342'};
+	if (level === 'LOW') {
+		return {classification: 'GOOD', advice, color: '#48BB78'};
 	}
 
-	if (value > 37 && value < 61) {
-		return {classification: 'MIXED', description: 'Air pollution can be a health hazard.', color: '#FFEB3B'};
+	if (level === 'MEDIUM') {
+		return {classification: 'MIXED', advice, color: '#F6E05E'};
 	}
 
-	if (value > 61 && value < 85) {
-		return {classification: 'BAD', description: 'Air pollution is a health hazard.', color: '#FF9800'};
+	if (level === 'HIGH') {
+		return {classification: 'BAD', advice, color: '#ED8936'};
 	}
 
-	if (value > 85 && value < 121) {
-		return {classification: 'VERY BAD', description: 'Avoid staying outdoors.', color: '#FF5722'};
+	if (level === 'VERY_HIGH') {
+		return {classification: 'VERY BAD', advice, color: '#E53E3E'};
 	}
 
-	if (value > 121) {
-		return {classification: 'EXTREMELY BAD', description: 'Avoid staying outdoors at all cost!', color: '#BF360C'};
+	if (level === 'EXTREME') {
+		return {classification: 'EXTREMELY BAD', advice, color: '#822727'};
 	}
 
-	return {classification: 'UNKNOWN', description: 'The air quality is unknown.', color: '#9E9E9E'};
+	if (level === 'AIRMAGEDDON') {
+		return {classification: 'HORRENDOUSLY BAD', advice, color: '#97266D'};
+	}
+
+	return {classification: 'UNKNOWN', advice: 'The air quality is unknown.', color: '#A0AEC0'};
 };
 
 export default classifyAirQuality;
