@@ -17,6 +17,7 @@ import {
 	Tag,
 	Spinner
 } from '@chakra-ui/core';
+import {format} from 'date-fns';
 
 const Bar = dynamic(
 	() => import('react-chartjs-2').then(module => module.Bar),
@@ -111,7 +112,7 @@ const Utility = () => {
 								<Stat>
 									{current.map(el => (
 										<div key={el.name}>
-											<StatLabel>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}</StatLabel>
+											<StatLabel>{el.name === 'PM25' ? 'PM2.5' : el.name}</StatLabel>
 											<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
 											<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
 											<br/>
@@ -130,8 +131,7 @@ const Utility = () => {
 						setLoading(false);
 					} else {
 						// Format forecast dates to be user friendly
-						const {format} = await import('date-fns');
-						const from = await data.forecast.map(el => `${format(new Date(el.fromDateTime), 'dd.MM hh:mm')}`);
+						const from = await data.forecast.map(el => `${format(new Date(el.fromDateTime), 'dd.MM HH:mm')}`);
 
 						// Get PM25 forecast
 						const pm25Values = data.forecast.map(el => {
@@ -140,15 +140,15 @@ const Utility = () => {
 							return value[0];
 						});
 
-						const pm25Indexes = data.forecast.map(el => {
-							return el.indexes[0];
-						});
-
 						// Get PM10 forecast
 						const pm10Values = data.forecast.map(el => {
 							const value = el.values.map(el => el.value);
 
 							return value[1];
+						});
+
+						const qualityForecast = data.forecast.map(el => {
+							return el.indexes[0];
 						});
 
 						setResults(
@@ -159,7 +159,7 @@ const Utility = () => {
 									<Stat>
 										{current.map(el => (
 											<div key={el.name}>
-												<StatLabel>{el.name === 'PM25' ? 'PM2.5' : 'PM10'}</StatLabel>
+												<StatLabel>{el.name === 'PM25' ? 'PM2.5' : el.name}</StatLabel>
 												<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
 												<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
 											</div>
@@ -173,55 +173,57 @@ const Utility = () => {
 									<i style={{fontSize: '0.8em'}}>{advice}</i>
 								</Box>
 								<br/>
+								{qualityForecast[1] ?
+									<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+										<Wrapper>
+											<Heading as="h2" size="lg">Air Quality Forecast</Heading>
+											<br/>
+											<Bar
+												height={250}
+												data={{
+													labels: from,
+													datasets: [{
+														label: 'Airly CAQI',
+														backgroundColor: qualityForecast.map(value => classifyAirQuality(value).backgroundColor),
+														data: qualityForecast.map(el => el.value)
+													}]
+												}}
+											/>
+										</Wrapper>
+									</Box> :
+									''}
+								<br/>
 								{pm25Values[1] ?
-									<>
-										<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
-											<Wrapper>
-												<Heading as="h2" size="lg">Air Quality Forecast</Heading>
-												<br/>
-												<Bar
-													data={{
-														labels: from,
-														datasets: [{
-															label: 'Airly CAQI',
-															backgroundColor: pm25Indexes.map(value => classifyAirQuality(value).backgroundColor),
+									<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+										<Wrapper>
+											<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
+											<br/>
+											<Line
+												height={250}
+												data={{
+													labels: from,
+													datasets: [
+														{
+															label: 'PM2.5 (in μg/m3)',
+															backgroundColor: '#3182CE',
 															data: pm25Values
-														}]
-													}}
-												/>
-											</Wrapper>
-										</Box>
-										<br/>
-										<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
-											<Wrapper>
-												<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
-												<br/>
-												<Line
-													height={250}
-													data={{
-														labels: from,
-														datasets: [
-															{
-																label: 'PM2.5 (in μg/m3)',
-																backgroundColor: '#3182CE',
-																data: pm25Values
-															},
-															{
-																label: 'PM10 (in μg/m3)',
-																backgroundColor: '#63B3ED',
-																data: pm10Values
-															}
-														]
-													}}
-													options={{
-														tooltips: {
-															mode: 'index'
+														},
+														{
+															label: 'PM10 (in μg/m3)',
+															backgroundColor: '#63B3ED',
+															data: pm10Values
 														}
-													}}
-												/>
-											</Wrapper>
-										</Box>
-									</> : ''}
+													]
+												}}
+												options={{
+													tooltips: {
+														mode: 'index'
+													}
+												}}
+											/>
+										</Wrapper>
+									</Box> :
+									''}
 								<br/>
 								<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
 							</Stack>
