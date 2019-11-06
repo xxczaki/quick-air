@@ -2,6 +2,9 @@
 
 > Check air quality near you quickly, using [Airly](https://airly.eu/) API
 
+[![Build Status](https://travis-ci.org/xxczaki/quick-air.svg?branch=master)](https://travis-ci.org/xxczaki/quick-air)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+
 ---
 
 ## Highlights
