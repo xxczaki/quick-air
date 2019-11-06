@@ -65,18 +65,27 @@ const Utility = () => {
 						if (val === undefined || cacheTimestamp === undefined || (currentTimestamp - cacheTimestamp) > 300) {
 							await module.clear();
 
+							// Search for 3 nearest installations, up to 30km from the current location
 							const installations = await airly.nearestInstallations(latitude, longitude, 30, 3);
 
+							// Throw an error if no installations were found
+							if (!installations[0]) {
+								throw new Error('No installations were found in your area.');
+							}
+
+							// Otherwise, try to obtain data from the nearest sensor
 							let data = await airly.installationMeasurements(installations[0].id);
 
 							const nearestInstallationData = data.current.values.filter(item => (
 								item.name === 'PM25'
-							));
+							)).map(el => el.value);
 
-							if (!nearestInstallationData) {
+							// If data from the sensor isn't available, try to fetch from the second sensor available
+							if (!nearestInstallationData && installations[1]) {
 								data = await airly.installationMeasurements(installations[1].id);
 							}
 
+							// Cache data & current timestamp
 							module.set('qa-installations', installations);
 							module.set('qa-data', data);
 							module.set('qa-timestamp', currentTimestamp);
@@ -242,11 +251,20 @@ const Utility = () => {
 					}
 				});
 			} catch (error) {
+				let errorToDisplay = '';
+
+				if (error.message === 'No installations were found in your area.') {
+					errorToDisplay = error.message;
+				} else {
+					errorToDisplay = 'See the browser\'s console for more details';
+					console.log(error);
+				}
+
 				setResults(
 					<Alert style={{maxWidth: '50em'}} status="error">
 						<AlertIcon/>
 						<AlertTitle mr={2}>Something went wrong!</AlertTitle>
-						<AlertDescription>{error}</AlertDescription>
+						<AlertDescription>{errorToDisplay}</AlertDescription>
 					</Alert>
 				);
 				setLoading(false);
