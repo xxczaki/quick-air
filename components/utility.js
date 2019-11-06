@@ -34,10 +34,7 @@ const Wrapper = dynamic(
 	{loading: () => <Spinner/>}
 );
 
-const Legend = dynamic(
-	() => import('./legend'),
-	{loading: () => <Spinner/>}
-);
+import Legend from './legend';
 
 const Utility = () => {
 	const [loading, setLoading] = useState(false);
