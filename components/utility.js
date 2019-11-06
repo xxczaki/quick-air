@@ -34,6 +34,11 @@ const Wrapper = dynamic(
 	{loading: () => <Spinner/>}
 );
 
+const Legend = dynamic(
+	() => import('./legend'),
+	{loading: () => <Spinner/>}
+);
+
 const Utility = () => {
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState(null);
@@ -125,6 +130,10 @@ const Utility = () => {
 									<Tag style={{backgroundColor, color: textColor}} size="sm">{classification}</Tag>
 								</Flex>
 								<br/>
+								<br/>
+								<hr/>
+								<Legend/>
+								<br/>
 								<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
 							</>
 						);
@@ -171,6 +180,10 @@ const Utility = () => {
 										<Tag style={{backgroundColor, color: textColor}} size="sm">{classification}</Tag>
 									</Flex>
 									<i style={{fontSize: '0.8em'}}>{advice}</i>
+									<br/>
+									<br/>
+									<hr/>
+									<Legend/>
 								</Box>
 								<br/>
 								{qualityForecast[1] ?
