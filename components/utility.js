@@ -54,7 +54,7 @@ const Utility = () => {
 				const {latitude, longitude} = position.coords;
 
 				const {default: Airly} = await import('airly');
-				const airly = new Airly('bcVQ6mwVNC9SXgbV3Lgl5p8JujUpf8Vo');
+				const airly = new Airly('API_KEY');
 
 				// Check whether cached results exists and if not, make an API request
 				await import('idb-keyval').then(async module => {
