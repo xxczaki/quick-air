@@ -54,7 +54,7 @@ const Utility = () => {
 				const {latitude, longitude} = position.coords;
 
 				const {default: Airly} = await import('airly');
-				const airly = new Airly('API_KEY');
+				const airly = new Airly('bcVQ6mwVNC9SXgbV3Lgl5p8JujUpf8Vo');
 
 				// Check whether cached results exists and if not, make an API request
 				await import('idb-keyval').then(async module => {
@@ -75,18 +75,20 @@ const Utility = () => {
 
 							// Otherwise, try to obtain data from the nearest sensor
 							let data = await airly.installationMeasurements(installations[0].id);
+							let installation = installations[0];
 
 							const nearestInstallationData = data.current.values.filter(item => (
 								item.name === 'PM25'
 							)).map(el => el.value);
 
 							// If data from the sensor isn't available, try to fetch from the second sensor available
-							if (!nearestInstallationData && installations[1]) {
+							if (!nearestInstallationData.toString() && installations[1]) {
 								data = await airly.installationMeasurements(installations[1].id);
+								installation = installations[1];
 							}
 
 							// Cache data & current timestamp
-							module.set('qa-installations', installations);
+							module.set('qa-installations', installation);
 							module.set('qa-data', data);
 							module.set('qa-timestamp', currentTimestamp);
 						} else {
@@ -96,7 +98,7 @@ const Utility = () => {
 
 					// Get the nearest installation (within 10 kilometers)
 					const installations = await module.get('qa-installations');
-					const {address, location} = installations[0];
+					const {address, location} = installations;
 
 					// Fetch data from the found installation
 					const data = await module.get('qa-data');
