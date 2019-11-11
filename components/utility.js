@@ -15,7 +15,9 @@ import {
 	AlertTitle,
 	AlertDescription,
 	Tag,
-	Spinner
+	Spinner,
+	Tooltip,
+	Icon
 } from '@chakra-ui/core';
 import {format} from 'date-fns';
 
@@ -76,6 +78,7 @@ const Utility = () => {
 							// Otherwise, try to obtain data from the nearest sensor
 							let data = await airly.installationMeasurements(installations[0].id);
 							let installation = installations[0];
+							let usedInstallation = 0;
 
 							const nearestInstallationData = data.current.values.filter(item => (
 								item.name === 'PM25'
@@ -85,10 +88,19 @@ const Utility = () => {
 							if (!nearestInstallationData.toString() && installations[1]) {
 								data = await airly.installationMeasurements(installations[1].id);
 								installation = installations[1];
+								usedInstallation = 1;
+							}
+
+							// If data from the second sensor isn't available, try to fetch from the third (last) sensor
+							if (!nearestInstallationData.toString() && installations[2]) {
+								data = await airly.installationMeasurements(installations[2].id);
+								installation = installations[2];
+								usedInstallation = 2;
 							}
 
 							// Cache data & current timestamp
 							module.set('qa-installations', installation);
+							module.set('qa-usedInstallation', usedInstallation);
 							module.set('qa-data', data);
 							module.set('qa-timestamp', currentTimestamp);
 						} else {
@@ -98,6 +110,7 @@ const Utility = () => {
 
 					// Get the nearest installation (within 10 kilometers)
 					const installations = await module.get('qa-installations');
+					const usedInstallation = await module.get('qa-usedInstallation');
 					const {address, location} = installations;
 
 					// Fetch data from the found installation
@@ -148,7 +161,8 @@ const Utility = () => {
 						setLoading(false);
 					} else {
 						// Format forecast dates to be user friendly
-						const from = await data.forecast.map(el => `${format(new Date(el.fromDateTime), 'dd.MM HH:mm')}`);
+						const notEmpty = await data.forecast.filter(el => el.values.toString());
+						const from = await notEmpty.map(el => `${format(new Date(el.fromDateTime), 'dd.MM HH:mm')}`);
 
 						// Get PM25 forecast
 						const pm25Values = data.forecast.map(el => {
@@ -170,6 +184,17 @@ const Utility = () => {
 
 						setResults(
 							<Stack maxWidth="50em">
+								{usedInstallation === 0 ? '' : (
+									<>
+										<p>
+											Using fallback installation
+											<Tooltip label="As the nearest sensor isn't available, we are using a fallback to display data">
+												<Icon paddingLeft={1} name="info" size="1.1em"/>
+											</Tooltip>
+										</p>
+										<br/>
+									</>
+								)}
 								<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 									<Heading as="h2" size="lg">Current:</Heading>
 									<br/>
