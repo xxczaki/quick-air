@@ -234,6 +234,15 @@ const Utility = () => {
 														data: qualityForecast.map(el => el.value)
 													}]
 												}}
+												options={{
+													tooltips: {
+														callbacks: {
+															title(tooltipItems) {
+																return '🕒 ' + tooltipItems[0].xLabel;
+															}
+														}
+													}
+												}}
 											/>
 										</Wrapper>
 									</Box> :
@@ -252,18 +261,34 @@ const Utility = () => {
 														{
 															label: 'PM2.5 (in μg/m3)',
 															backgroundColor: '#3182CE',
-															data: pm25Values
+															fill: true,
+															data: pm25Values,
+															pointRadius: 0
 														},
 														{
 															label: 'PM10 (in μg/m3)',
 															backgroundColor: '#63B3ED',
-															data: pm10Values
+															fill: true,
+															data: pm10Values,
+															pointRadius: 0
 														}
 													]
 												}}
 												options={{
+													scales: {
+														yAxes: [{
+															stacked: true
+														}]
+													},
+													elements: {point: {hitRadius: 7, hoverRadius: 5}},
 													tooltips: {
-														mode: 'index'
+														mode: 'index',
+														intersect: false,
+														callbacks: {
+															title(tooltipItems) {
+																return '🕒 ' + tooltipItems[0].xLabel;
+															}
+														}
 													}
 												}}
 											/>
