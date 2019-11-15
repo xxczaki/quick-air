@@ -34,4 +34,4 @@ const classifyAirQuality = index => {
 	return {classification: 'UNKNOWN', advice: 'The air quality is unknown.', backgroundColor: '#A0AEC0', textColor: '#000'};
 };
 
-export default classifyAirQuality;
+export {classifyAirQuality};
