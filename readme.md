@@ -20,20 +20,23 @@
 
 > Hosted with [now Δ](https://zeit.com/now)
 
-```
-# Install dependencies
-$ npm install
+First of all, you will need Airly API key. Get it [here](https://developer.airly.eu/login) for free.
 
+You should then export the `AIRLY_KEY` environment variable.
+
+```
 # Start in development mode
-$ npm run dev
+$ AIRLY_KEY=yourapikey npm run dev
 
 # Build for production
-$ npm run build
+$ AIRLY_KEY=yourapikey npm run build
 ```
+
+**NOTE: If you are using `now dev` command and/or you want to deploy this app to [Zeit Now](https://zeit.co/home), create a `.env.build` file in the root directory and place the `AIRLY_KEY` variable there**
 
 ## How it works?
 
-After granting a location access and clicking the "Check air quality" button, the application tries to find the nearest air quality sensor and retrieve data about PM2.5 and PM10. It then classifies the air quality using PM2.5 value and prepares a charts with pollution forecast :smile:
+After clicking the "Check air quality" button, the application asks for location access, tries to find the nearest air quality sensor and retrieve data about PM2.5 and PM10. It then classifies the air quality using AIRLY CAQI and prepares charts with pollution forecast :smile:
 
 ## Country coverage
 
