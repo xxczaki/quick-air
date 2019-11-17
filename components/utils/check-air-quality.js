@@ -45,7 +45,7 @@ const checkAirQuality = async position => {
 	try {
 		const {latitude, longitude} = position.coords;
 
-		const airly = new Airly('API_KEY');
+		const airly = new Airly(process.env.AIRLY_KEY);
 
 		// Check whether cached results exists and if not, make an API request
 		await get('qa-data').then(async val => {
@@ -174,7 +174,7 @@ const checkAirQuality = async position => {
 					<>
 						<p>
 							Using fallback installation
-							<Tooltip label="As the nearest sensor isn't available, we are using a fallback to display data">
+							<Tooltip hasArrow closeOnClick label="As the nearest sensor isn't available, we are using a fallback to display data">
 								<Icon paddingLeft={1} name="info" size="1.1em" mx="2px"/>
 							</Tooltip>
 						</p>
@@ -205,7 +205,7 @@ const checkAirQuality = async position => {
 					<Legend/>
 				</Box>
 				<br/>
-				{qualityForecast[1] ?
+				{qualityForecast[1].value ?
 					<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 						<Wrapper>
 							<Heading as="h2" size="lg">Air Quality Forecast</Heading>
