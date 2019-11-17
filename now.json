@@ -17,7 +17,9 @@
       }
     ],
 		"regions": ["all"],
-		"env": {
-			"API_KEY": "@api-key"
+		"build": {
+			"env": {
+				"AIRLY_KEY": "@airly-key"
+			}
 		}
 }
