@@ -26,6 +26,9 @@ const nextConfig = {
 	experimental: {
 		modern: true,
 		granularChunks: true
+	},
+	env: {
+		AIRLY_KEY: process.env.AIRLY_KEY
 	}
 };
 
