@@ -174,7 +174,7 @@ const checkAirQuality = async position => {
 					<>
 						<p>
 							Using fallback installation
-							<Tooltip hasArrow closeOnClick label="As the nearest sensor isn't available, we are using a fallback to display data">
+							<Tooltip hasArrow label="As the nearest sensor isn't available, we are using a fallback to display data">
 								<Icon paddingLeft={1} name="info" size="1.1em" mx="2px"/>
 							</Tooltip>
 						</p>
