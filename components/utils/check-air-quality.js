@@ -117,33 +117,7 @@ const checkAirQuality = async position => {
 		const distance = Math.round(haversine({latitude, longitude}, location, {unit: 'km'}));
 
 		if (classification === 'UNKNOWN') {
-			return (
-				<>
-					<Heading as="h2" size="lg">Current:</Heading>
-					<br/>
-					<Stat>
-						{current.map(el => (
-							<div key={el.name}>
-								<StatLabel>{el.name === 'PM25' ? 'PM2.5' : el.name}</StatLabel>
-								<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
-								<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
-								<br/>
-							</div>
-						))}
-					</Stat>
-					<br/>
-					<Flex direction="row">
-						<p style={{paddingRight: '10px'}}>Air Quality:</p>
-						<Tag style={{backgroundColor, color: textColor}} size="sm">{classification}</Tag>
-					</Flex>
-					<br/>
-					<br/>
-					<hr/>
-					<Legend/>
-					<br/>
-					<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
-				</>
-			);
+			throw new Error('Data from installation not available.');
 		}
 
 		// Format forecast dates to be user friendly
