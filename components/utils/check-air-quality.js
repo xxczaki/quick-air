@@ -114,7 +114,7 @@ const checkAirQuality = async position => {
 
 		const {classification, advice, backgroundColor, textColor} = classifyAirQuality(index);
 
-		const distance = Math.round(haversine({latitude, longitude}, location, {unit: 'km'}));
+		const distance = haversine({latitude, longitude}, location, {unit: 'km'}).toFixed(1);
 
 		if (classification === 'UNKNOWN') {
 			throw new Error('Data from installation not available.');
