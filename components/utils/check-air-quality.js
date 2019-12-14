@@ -117,6 +117,7 @@ const checkAirQuality = async position => {
 		const distance = Math.round(haversine({latitude, longitude}, location, {unit: 'km'}));
 
 		if (classification === 'UNKNOWN') {
+			await clear();
 			return (
 				<>
 					<Heading as="h2" size="lg">Current:</Heading>
@@ -169,7 +170,7 @@ const checkAirQuality = async position => {
 		});
 
 		return (
-			<Stack maxWidth="50em">
+			<>
 				{usedInstallation === 0 ? '' : (
 					<>
 						<p>
@@ -181,109 +182,110 @@ const checkAirQuality = async position => {
 						<br/>
 					</>
 				)}
-				<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
-					<Heading as="h2" size="lg">Current:</Heading>
+				<Stack direction="row" flexWrap="wrap">
+					<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+						<Heading as="h2" size="lg">Current:</Heading>
+						<br/>
+						<Stat>
+							{current.map(el => (
+								<div key={el.name}>
+									<StatLabel>{el.name === 'PM25' ? 'PM2.5' : el.name}</StatLabel>
+									<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
+									<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
+								</div>
+							))}
+						</Stat>
+						<br/>
+						<Flex direction="row">
+							<p style={{paddingRight: '10px'}}>Air Quality:</p>
+							<Tag style={{backgroundColor, color: textColor}} size="sm">{classification}</Tag>
+						</Flex>
+						<i style={{fontSize: '0.8em'}}>{advice}</i>
+						<br/>
+						<br/>
+						<hr/>
+						<Legend/>
+					</Box>
 					<br/>
-					<Stat>
-						{current.map(el => (
-							<div key={el.name}>
-								<StatLabel>{el.name === 'PM25' ? 'PM2.5' : el.name}</StatLabel>
-								<StatNumber fontSize="xl">{el.value} µg/m³</StatNumber>
-								<StatHelpText>{el.name === 'PM25' ? `${Math.round(el.value / 25 * 100)}%` : `${Math.round(el.value / 50 * 100)}%`} of the WHO standard</StatHelpText>
-							</div>
-						))}
-					</Stat>
-					<br/>
-					<Flex direction="row">
-						<p style={{paddingRight: '10px'}}>Air Quality:</p>
-						<Tag style={{backgroundColor, color: textColor}} size="sm">{classification}</Tag>
-					</Flex>
-					<i style={{fontSize: '0.8em'}}>{advice}</i>
-					<br/>
-					<br/>
-					<hr/>
-					<Legend/>
-				</Box>
-				<br/>
-				{qualityForecast[1].value ?
-					<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
-						<Wrapper>
-							<Heading as="h2" size="lg">Air Quality Forecast</Heading>
-							<br/>
-							<Bar
-								height={250}
-								data={{
-									labels: from,
-									datasets: [{
-										label: 'Airly CAQI',
-										backgroundColor: qualityForecast.map(value => classifyAirQuality(value).backgroundColor),
-										data: qualityForecast.map(el => el.value)
-									}]
-								}}
-								options={{
-									tooltips: {
-										callbacks: {
-											title(tooltipItems) {
-												return '🕒 ' + tooltipItems[0].xLabel;
-											}
-										}
-									}
-								}}
-							/>
-						</Wrapper>
-					</Box> :
-					''}
-				<br/>
-				{pm25Values[1] ?
-					<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
-						<Wrapper>
-							<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
-							<br/>
-							<Line
-								height={250}
-								data={{
-									labels: from,
-									datasets: [
-										{
-											label: 'PM2.5 (in μg/m3)',
-											backgroundColor: '#3182CE',
-											fill: true,
-											data: pm25Values,
-											pointRadius: 0
-										},
-										{
-											label: 'PM10 (in μg/m3)',
-											backgroundColor: '#63B3ED',
-											fill: true,
-											data: pm10Values,
-											pointRadius: 0
-										}
-									]
-								}}
-								options={{
-									scales: {
-										yAxes: [{
-											stacked: true
+					{qualityForecast[1].value ?
+						<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+							<Wrapper>
+								<Heading as="h2" size="lg">Air Quality Forecast</Heading>
+								<br/>
+								<Bar
+									height={250}
+									data={{
+										labels: from,
+										datasets: [{
+											label: 'Airly CAQI',
+											backgroundColor: qualityForecast.map(value => classifyAirQuality(value).backgroundColor),
+											data: qualityForecast.map(el => el.value)
 										}]
-									},
-									elements: {point: {hitRadius: 7, hoverRadius: 5}},
-									tooltips: {
-										mode: 'index',
-										intersect: false,
-										callbacks: {
-											title(tooltipItems) {
-												return '🕒 ' + tooltipItems[0].xLabel;
+									}}
+									options={{
+										tooltips: {
+											callbacks: {
+												title(tooltipItems) {
+													return '🕒 ' + tooltipItems[0].xLabel;
+												}
 											}
 										}
-									}
-								}}
-							/>
-						</Wrapper>
-					</Box> :
-					''}
-				<br/>
+									}}
+								/>
+							</Wrapper>
+						</Box> :
+						''}
+					<br/>
+					{pm25Values[1] ?
+						<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+							<Wrapper>
+								<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
+								<br/>
+								<Line
+									height={250}
+									data={{
+										labels: from,
+										datasets: [
+											{
+												label: 'PM2.5 (in μg/m3)',
+												backgroundColor: '#3182CE',
+												fill: true,
+												data: pm25Values,
+												pointRadius: 0
+											},
+											{
+												label: 'PM10 (in μg/m3)',
+												backgroundColor: '#63B3ED',
+												fill: true,
+												data: pm10Values,
+												pointRadius: 0
+											}
+										]
+									}}
+									options={{
+										scales: {
+											yAxes: [{
+												stacked: true
+											}]
+										},
+										elements: {point: {hitRadius: 7, hoverRadius: 5}},
+										tooltips: {
+											mode: 'index',
+											intersect: false,
+											callbacks: {
+												title(tooltipItems) {
+													return '🕒 ' + tooltipItems[0].xLabel;
+												}
+											}
+										}
+									}}
+								/>
+							</Wrapper>
+						</Box> :
+						''}
+				</Stack>
 				<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
-			</Stack>
+			</>
 		);
 	} catch (error) {
 		let errorToDisplay = '';
