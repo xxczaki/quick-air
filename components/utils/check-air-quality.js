@@ -182,7 +182,7 @@ const checkAirQuality = async position => {
 						<br/>
 					</>
 				)}
-				<Stack direction="row" flexWrap="wrap">
+				<Stack direction="row" flexWrap="wrap" spacing={8}>
 					<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
 						<Heading as="h2" size="lg">Current:</Heading>
 						<br/>
