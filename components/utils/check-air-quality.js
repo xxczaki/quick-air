@@ -117,7 +117,6 @@ const checkAirQuality = async position => {
 		const distance = haversine({latitude, longitude}, location, {unit: 'km'}).toFixed(1);
 
 		if (classification === 'UNKNOWN') {
-<<<<<<< HEAD
 			await clear();
 			return (
 				<>
@@ -146,9 +145,6 @@ const checkAirQuality = async position => {
 					<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
 				</>
 			);
-=======
-			throw new Error('Data from installation not available.');
->>>>>>> bbc006fcee8e8141f8b0544bf46d9257491a04eb
 		}
 
 		// Format forecast dates to be user friendly
