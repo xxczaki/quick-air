@@ -2,7 +2,6 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import {
 	Box,
-	Stack,
 	Flex,
 	Heading,
 	Stat,
@@ -38,6 +37,11 @@ const Line = dynamic(
 
 const Wrapper = dynamic(
 	() => import('../wrapper'),
+	{loading: () => <Spinner/>}
+);
+
+const Grid = dynamic(
+	() => import('../grid'),
 	{loading: () => <Spinner/>}
 );
 
@@ -182,8 +186,8 @@ const checkAirQuality = async position => {
 						<br/>
 					</>
 				)}
-				<Stack direction="row" flexWrap="wrap" spacing={8}>
-					<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+				<Grid>
+					<Box p={5} shadow="md" borderWidth="1px" height="100%" maxWidth="35em">
 						<Heading as="h2" size="lg">Current:</Heading>
 						<br/>
 						<Stat>
@@ -206,9 +210,8 @@ const checkAirQuality = async position => {
 						<hr/>
 						<Legend/>
 					</Box>
-					<br/>
 					{qualityForecast[1].value ?
-						<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+						<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 							<Wrapper>
 								<Heading as="h2" size="lg">Air Quality Forecast</Heading>
 								<br/>
@@ -235,9 +238,8 @@ const checkAirQuality = async position => {
 							</Wrapper>
 						</Box> :
 						''}
-					<br/>
 					{pm25Values[1] ?
-						<Box p={5} marginBottom={5} shadow="md" borderWidth="1px" maxWidth="35em">
+						<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 							<Wrapper>
 								<Heading as="h2" size="lg">PM2.5 & PM10 Forecast</Heading>
 								<br/>
@@ -283,8 +285,12 @@ const checkAirQuality = async position => {
 							</Wrapper>
 						</Box> :
 						''}
-				</Stack>
-				<p><u>Sensor location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)</p>
+					<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
+						<Heading as="h2" size="lg">Sensor information:</Heading>
+						<br/>
+						<u>Location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)
+					</Box>
+				</Grid>
 			</>
 		);
 	} catch (error) {
