@@ -45,6 +45,14 @@ const Grid = dynamic(
 	{loading: () => <Spinner/>}
 );
 
+const OpenMap = dynamic(
+	() => import('../map'),
+	{
+		ssr: false,
+		loading: () => <Spinner/>
+	}
+);
+
 const checkAirQuality = async position => {
 	try {
 		const {latitude, longitude} = position.coords;
@@ -287,6 +295,8 @@ const checkAirQuality = async position => {
 						''}
 					<Box p={5} shadow="md" borderWidth="1px" maxWidth="35em">
 						<Heading as="h2" size="lg">Sensor information:</Heading>
+						<br/>
+						<OpenMap lat={location.latitude} lng={location.longitude}/>
 						<br/>
 						<u>Location:</u> {address.city}{address.street ? `, ${address.street}` : ''} (about {distance} {distance <= 1 ? 'kilometer' : 'kilometers'} from you)
 					</Box>
