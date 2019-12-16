@@ -17,6 +17,16 @@ const displayError = async message => {
 		);
 	}
 
+	if (message === 'Location not found') {
+		return (
+			<Alert style={{maxWidth: '50em'}} status="error">
+				<AlertIcon/>
+				<AlertTitle mr={2}>Location not found</AlertTitle>
+				<AlertDescription>Sorry, but we were unable to locate this place. Try again with something different.</AlertDescription>
+			</Alert>
+		);
+	}
+
 	return (
 		<Alert style={{maxWidth: '50em'}} status="error">
 			<AlertIcon/>

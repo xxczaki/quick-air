@@ -64,7 +64,7 @@ const checkAirQuality = async position => {
 			const cacheTimestamp = await get('qa-timestamp');
 			const currentTimestamp = Math.floor(Date.now() / 1000);
 
-			if (val === undefined || cacheTimestamp === undefined || (currentTimestamp - cacheTimestamp) > 300) {
+			if (val === undefined || cacheTimestamp === undefined || (currentTimestamp - cacheTimestamp) > 60) {
 				await clear();
 
 				// Search for 3 nearest installations, up to 30km from the current location
