@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useFormState} from 'react-use-form-state';
-import {Button, Checkbox, Input} from '@chakra-ui/core';
+import {Button, Checkbox, Input, Text, Link} from '@chakra-ui/core';
 
 const Utility = () => {
 	const [loading, setLoading] = useState(false);
@@ -74,28 +74,28 @@ const Utility = () => {
 	return (
 		<>
 			<Checkbox
-				isChecked={formState.values.manual}
+				isChecked={!formState.values.manual}
 				onChange={() => formState.values.manual ? formState.setField('manual', false) : formState.setField('manual', true)}
 			>
-			Manually enter location
+			Use geolocation
 			</Checkbox>
 			<br/>
 			{formState.values.manual ?
 				<>
-					<Input {...text('value')} width={250} placeholder="Enter your location"/>
+					<Input {...text('value')} width={250} marginBottom={2} placeholder="Enter your location"/>
+					<Text fontSize="xs">Powered by <Link isExternal color="teal.500" href="https://nominatim.openstreetmap.org/">Nominatim</Link></Text>
 					<br/>
 				</> : ''}
 			<Button
 				style={{width: '250px'}}
 				size="lg"
 				variantColor="green"
-				leftIcon={results === null || results === 'Please grant location access' ? '' : 'repeat'}
 				type="submit"
 				disabled={results === 'Please grant location access'}
 				isLoading={loading}
 				onClick={handleSubmit}
 			>
-				{results === null || results === 'Please grant location access' || (formState.values.option === 'manual' && results !== null) ? 'Check air quality' : 'Refresh'}
+				Check air quality
 			</Button>
 			<br/>
 			<br/>
