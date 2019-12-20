@@ -88,9 +88,18 @@ export default class MyDocument extends Document {
 					<link rel="apple-touch-startup-image"
 						href="/icons/apple-splash-1136-640.png"
 						media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/>
-					<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+					<link
+						rel="preload"
+						href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 						integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-						crossOrigin=""/>
+						as="style"
+					/>
+					<link
+						rel="stylesheet"
+						href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+						integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+						crossOrigin=""
+					/>
 				</Head>
 				<body>
 					<Main/>
