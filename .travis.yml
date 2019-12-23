@@ -9,8 +9,6 @@ cache:
   npm: true
   directories:
     - ~/.cache
-install:
-  - npm ci
 before_script:
   - npm test && npm run dev && sleep 10 &
 script:
