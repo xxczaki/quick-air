@@ -1,3 +1,18 @@
 language: node_js
 node_js:
 - "node"
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
+cache:
+  npm: true
+  directories:
+    - ~/.cache
+    - .next/cache
+install:
+  - npm ci
+before_script:
+  - npm test && npm run build && npm start &
+script:
+  - $(npm bin)/cypress run --parallel
