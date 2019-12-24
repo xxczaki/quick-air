@@ -12,7 +12,5 @@ cache:
     - .next/cache
 install:
   - npm ci
-before_script:
-  - npm test && npm run build && npm start &
 script:
-  - $(npm bin)/cypress run
+  - npm test

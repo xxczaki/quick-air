@@ -7,9 +7,9 @@
         "build": "next build",
         "dev": "next dev",
         "start": "next start",
-        "test": "xo && ava",
-        "cypress:open": "cypress open",
-        "cypress:run": "cypress run --headless"
+        "cy:open": "cypress open",
+		"cy:run": "cypress run",
+        "test": "xo && ava && start-server-and-test dev http://localhost:3000 cy:run"
     },
     "ava": {
         "require": [
@@ -82,6 +82,7 @@
         "next-optimized-images": "^2.5.4",
         "react-test-renderer": "^16.12.0",
         "require-hacker": "^3.0.1",
+        "start-server-and-test": "^1.10.6",
         "xo": "^0.25.3"
     }
 }
