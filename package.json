@@ -7,9 +7,9 @@
         "build": "next build",
         "dev": "next dev",
         "start": "next start",
-		"test": "xo && ava",
-		"cypress:open": "cypress open",
-		"cypress:run": "cypress run --headless"
+        "test": "xo && ava",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run --headless"
     },
     "ava": {
         "require": [
@@ -21,13 +21,13 @@
         "envs": [
             "node",
             "browser"
-		],
-		"globals": [
-			"cy",
-			"Cypress",
-			"it",
-			"describe"
-		],
+        ],
+        "globals": [
+            "cy",
+            "Cypress",
+            "it",
+            "describe"
+        ],
         "extends": "xo-react",
         "nodeVersion": ">=10",
         "parser": "babel-eslint",
@@ -41,20 +41,20 @@
             "react": {
                 "version": "16.12"
             }
-		},
-		"ignores": [
-			"cypress/plugins"
-		]
+        },
+        "ignores": [
+            "cypress/plugins"
+        ]
     },
     "dependencies": {
         "@chakra-ui/core": "^0.5.1",
-        "@emotion/core": "^10.0.22",
-        "@emotion/styled": "^10.0.23",
+        "@emotion/core": "^10.0.27",
+        "@emotion/styled": "^10.0.27",
         "airly": "^3.1.0",
         "chart.js": "^2.9.3",
         "core-js": "^3.6.0",
         "date-fns": "^2.8.1",
-        "emotion-theming": "^10.0.19",
+        "emotion-theming": "^10.0.27",
         "haversine": "^1.1.1",
         "idb-keyval": "^3.2.0",
         "leaflet": "^1.6.0",
@@ -71,7 +71,7 @@
         "@babel/register": "^7.7.7",
         "ava": "^2.4.0",
         "babel-eslint": "^10.0.3",
-        "babel-plugin-emotion": "^10.0.23",
+        "babel-plugin-emotion": "^10.0.27",
         "cypress": "^3.8.0",
         "eslint-config-xo-react": "^0.20.0",
         "eslint-plugin-react": "^7.17.0",
