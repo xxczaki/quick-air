@@ -10,7 +10,7 @@
 ## Highlights
 
 - Built with modern technologies
-- Great performance (100 Lighthouse score)
+- Great performance
 - Shows data in a friendly way
 - Utilizes the [airly](https://github.com/xxczaki/airly) package
 - Caches data
