@@ -56,7 +56,6 @@
         "date-fns": "^2.8.1",
         "emotion-theming": "^10.0.27",
         "haversine": "^1.1.1",
-        "idb-keyval": "^3.2.0",
         "leaflet": "^1.6.0",
         "next": "^9.1.6",
         "prop-types": "^15.7.2",
@@ -65,7 +64,8 @@
         "react-dom": "^16.12.0",
         "react-leaflet": "^2.6.1",
         "react-use-form-state": "^0.12.0",
-        "swr": "^0.1.15"
+        "swr": "^0.1.15",
+        "use-position": "0.0.6"
     },
     "devDependencies": {
         "@babel/core": "^7.7.7",
@@ -73,7 +73,7 @@
         "ava": "^2.4.0",
         "babel-eslint": "^10.0.3",
         "babel-plugin-emotion": "^10.0.27",
-        "cypress": "^3.8.0",
+        "cypress": "^3.8.1",
         "eslint-config-xo-react": "^0.20.0",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-hooks": "^2.3.0",
