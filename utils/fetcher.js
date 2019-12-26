@@ -1,6 +1,7 @@
 'use strict';
 
 import Airly from 'airly';
+import haversine from 'haversine';
 
 export const fetcher = async (latitude, longitude) => {
 	if (!latitude || !longitude) {
@@ -40,9 +41,12 @@ export const fetcher = async (latitude, longitude) => {
 		usedInstallation = 2;
 	}
 
+	const distance = haversine({latitude, longitude}, installation.location, {unit: 'km'}).toFixed(1);
+
 	return {
 		installation,
 		usedInstallation,
+		distance,
 		data
 	};
 };
