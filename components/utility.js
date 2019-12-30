@@ -10,13 +10,15 @@ import Data from './data';
 const Utility = () => {
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState(null);
-	const [formState, {text}] = useFormState();
 	const {latitude, longitude, error} = usePosition();
+	const [formState, {text}] = useFormState({
+		manual: false
+	});
 
 	const handleSubmit = async () => {
 		setLoading(true);
 
-		if (formState.values.manual) {
+		if (formState.values.manual || error) {
 			const {value} = formState.values;
 
 			const response = await fetch(`https://nominatim.openstreetmap.org/search?q="${value}"&format=json&limit=1`);
@@ -52,7 +54,7 @@ const Utility = () => {
 			Use geolocation
 			</Checkbox>
 			<br/>
-			{error || formState.values.manual ?
+			{formState.values.manual || error ?
 				<>
 					<Input {...text('value')} width={250} marginBottom={2} placeholder="Enter your location"/>
 					<Text fontSize="xs">Powered by <Link isExternal color="teal.500" href="https://nominatim.openstreetmap.org/">Nominatim</Link></Text>
