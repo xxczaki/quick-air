@@ -63,8 +63,7 @@
         "react-chartjs-2": "^2.8.0",
         "react-dom": "^16.12.0",
         "react-leaflet": "^2.6.1",
-        "react-use-form-state": "^0.12.0",
-        "swr": "^0.1.15",
+        "react-use-form-state": "^0.12.1",
         "use-position": "0.0.6"
     },
     "devDependencies": {

@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {useFormState} from 'react-use-form-state';
 import {Button, Checkbox, Input, Text, Link} from '@chakra-ui/core';
 import {usePosition} from 'use-position';
-import useSWR from 'swr';
 
 import {fetcher} from '../utils/fetcher';
 
@@ -13,7 +12,6 @@ const Utility = () => {
 	const [results, setResults] = useState(null);
 	const [formState, {text}] = useFormState();
 	const {latitude, longitude, error} = usePosition();
-	const {data, error: fetchError} = useSWR([latitude, longitude], fetcher);
 
 	const handleSubmit = async () => {
 		setLoading(true);
@@ -31,16 +29,15 @@ const Utility = () => {
 				setResults(errorToShow);
 				setLoading(false);
 			} else {
-				// TODO: Rewrite to useSWR
 				const response = await fetcher(json[0].lat, json[0].lon);
 
 				setResults(<Data res={response}/>);
 				setLoading(false);
 			}
-		}
+		} else {
+			const response = await fetcher(latitude, longitude);
 
-		if (!formState.values.manual && !fetchError && !error) {
-			setResults(<Data res={data}/>);
+			setResults(<Data res={response}/>);
 			setLoading(false);
 		}
 	};
