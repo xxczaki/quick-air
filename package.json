@@ -12,7 +12,7 @@
         "test": "xo && ava && start-server-and-test dev http://localhost:3000 cy:run"
 	},
 	"engines": {
-		"node": "latest"
+		"node": "*"
 	},
     "ava": {
         "require": [
