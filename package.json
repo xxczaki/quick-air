@@ -8,7 +8,7 @@
         "dev": "next dev",
         "start": "next start",
         "cy:open": "cypress open",
-		"cy:run": "cypress run",
+        "cy:run": "cypress run",
         "test": "xo && ava && start-server-and-test dev http://localhost:3000 cy:run"
     },
     "ava": {
@@ -47,24 +47,24 @@
         ]
     },
     "dependencies": {
-        "@chakra-ui/core": "^0.5.1",
+        "@chakra-ui/core": "^0.5.2",
         "@emotion/core": "^10.0.27",
         "@emotion/styled": "^10.0.27",
         "airly": "^3.1.0",
         "chart.js": "^2.9.3",
-        "core-js": "^3.6.0",
-        "date-fns": "^2.8.1",
+        "core-js": "^3.6.2",
+        "date-fns": "^2.9.0",
         "emotion-theming": "^10.0.27",
         "haversine": "^1.1.1",
         "idb-keyval": "^3.2.0",
         "leaflet": "^1.6.0",
-        "next": "^9.1.6",
+        "next": "^9.1.7",
         "prop-types": "^15.7.2",
         "react": "^16.12.0",
         "react-chartjs-2": "^2.8.0",
         "react-dom": "^16.12.0",
         "react-leaflet": "^2.6.1",
-        "react-use-form-state": "^0.12.0"
+        "react-use-form-state": "^0.12.1"
     },
     "devDependencies": {
         "@babel/core": "^7.7.7",
@@ -72,8 +72,8 @@
         "ava": "^2.4.0",
         "babel-eslint": "^10.0.3",
         "babel-plugin-emotion": "^10.0.27",
-        "cypress": "^3.8.0",
-        "eslint-config-xo-react": "^0.20.0",
+        "cypress": "^3.8.1",
+        "eslint-config-xo-react": "^0.22.0",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-hooks": "^2.3.0",
         "imagemin-svgo": "^7.0.0",
