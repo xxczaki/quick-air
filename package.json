@@ -10,7 +10,10 @@
         "cy:open": "cypress open",
         "cy:run": "cypress run",
         "test": "xo && ava && start-server-and-test dev http://localhost:3000 cy:run"
-    },
+	},
+	"engines": {
+		"node": "latest"
+	},
     "ava": {
         "require": [
             "@babel/register",
