@@ -6,16 +6,14 @@ const OpenMap = ({lat, lng}) => {
 	const position = [lat, lng];
 
 	return (
-		<>
-			<Map center={position} zoom={13} style={{height: '20em'}}>
-				<TileLayer
-					style={{width: '200px'}}
-					attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				/>
-				<Marker position={position}/>
-			</Map>
-		</>
+		<Map center={position} zoom={13} style={{height: '20em'}}>
+			<TileLayer
+				style={{width: '200px'}}
+				attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+			/>
+			<Marker position={position}/>
+		</Map>
 	);
 };
 
