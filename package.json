@@ -39,16 +39,17 @@
             "import/no-unresolved": "off",
             "react/jsx-child-element-spacing": "off",
             "no-negated-condition": "off",
-            "promise/prefer-await-to-then": "off"
+			"promise/prefer-await-to-then": "off",
+			"node/no-unsupported-features/es-syntax": "off"
         },
         "settings": {
             "react": {
-                "version": "16.12"
+                "version": "16.13"
             }
         },
         "ignores": [
-            "cypress/plugins"
-        ]
+            "cypress/plugins/index.js"
+		]
     },
     "dependencies": {
         "@chakra-ui/core": "^0.6.1",
@@ -71,14 +72,14 @@
         "react-use-form-state": "^0.12.1"
     },
     "devDependencies": {
-        "@babel/core": "^7.8.6",
+        "@babel/core": "^7.8.7",
         "@babel/register": "^7.8.6",
-        "ava": "^3.4.0",
+        "ava": "^3.5.0",
         "babel-eslint": "^10.1.0",
-        "babel-plugin-emotion": "^10.0.28",
-        "cypress": "^4.0.2",
+        "babel-plugin-emotion": "^10.0.29",
+        "cypress": "^4.1.0",
         "eslint-config-xo-react": "^0.23.0",
-        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react": "^7.19.0",
         "eslint-plugin-react-hooks": "^2.5.0",
         "imagemin-svgo": "^7.1.0",
         "next-fonts": "^1.0.3",
