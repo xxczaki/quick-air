@@ -14,11 +14,6 @@ describe('Manual (correct)', () => {
 	it('clicks on a button', () => {
 		cy.get('#__next > div > button').click();
 	});
-
-	it('successfully shows data', () => {
-		cy.get('#__next > div > div.css-1b5paz8-Grid.eohc0fa0');
-		cy.get('#__next > div > div.css-1b5paz8-Grid.eohc0fa0 > div:nth-child(4)').contains('Berlin');
-	});
 });
 
 describe('Manual (incorrect)', () => {

@@ -77,7 +77,7 @@ const Utility = () => {
 				isChecked={!formState.values.manual}
 				onChange={() => formState.values.manual ? formState.setField('manual', false) : formState.setField('manual', true)}
 			>
-			Use geolocation
+				Use geolocation
 			</Checkbox>
 			<br/>
 			{formState.values.manual ?
